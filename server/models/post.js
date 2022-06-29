@@ -1,32 +1,52 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+const PostSchema = new mongoose.Schema({
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: "USER",
+  },
 
+  text: {
+    type: String,
+    required: true,
+  },
+  name: {
+    type: String,
+  },
+  profile: {
+    type: String,
+  },
+  tags: [
+    {
+      user: {
+        type: String,
+        ref: "USER",
+      },
+    },
+  ],
+  Comment: [
+    {
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: "USER",
+      },
+      text: {
+        type: String,
+        required: true,
+      },
+      name: {
+        type: String,
+      },
+      date: {
+        type: Date,
+        default: Date.now,
+      },
+    },
+  ],
+  date: {
+    type: Date,
+    default: Date.now,
+  },
+});
 
-const postSchema = new mongoose.Schema({
-  postcontent: {type:String},
-  likes: {type:Number},
-  comment: [String]
-})
-
-const Posts = mongoose.model("User", postSchema);
-
-async function createpost(c) {  //c content
-  
-    const newContent = await Posts.create({
-      c
-    });
-  
-    return newContent;
-  }
-
-  async function updatePost(id,c) {
-    const uPost = await User.updateOne({"_id": id}, {$set: { c: c}});
-    return uPost;
-  }
-
-  async function deletePost(id) {
-    await User.deleteOne({"_id": id});
-  };
-
-  module.exports = { 
-    createpost, updatePost, deletePost
-  };
+module.exports = Post = mongoose.model("post", PostSchema);
